@@ -1,25 +1,25 @@
 import numpy as np
 
-def prepare_dataset(path):
-    data_file = open(path, "r")
-    set = []
-
-    for line in data_file.readlines():
-        example = line.split(',')
-        for i in range(len(example)):
-            example[i] = int(example[i])
-        set.append(example)
-
+def getMnistData(path):
+    # Open filestream at the file path provided
+    data_file = open(path)
+    # Reads the whole file into a list
+    data_list = data_file.readlines()
+    # Close datastream
     data_file.close()
-    return set
+    # Return list of values gotten from the file
+    return data_list
 
-def zero_out_targets(outputs):
-    return np.zeros(outputs) + 0.01
+def convertToNormalizedFloatArray(all_values):
+    # Convert the list of strings into an array of floats (omitting the target
+    #   value at the beginning of the list) and normalize the values from 0-255
+    #   to 0-1
+    return (np.asfarray(all_values[1:]) / 255.0 * 0.99) + 0.01
 
-def set_desired_target(outputs, target):
-    targets = zero_out_targets(outputs)
-    targets[target] = 0.99
+def getTargets(output_nodes, all_values):
+    # Define target list with each value as low as possible (0.01)
+    targets = np.zeros(output_nodes) + 0.01
+    # Set the index of the desired target to be as high as possible (0.99)
+    targets[int(all_values[0])] = 0.99
+    # return the list of targets
     return targets
-
-def scale_training_set(training_set):
-    return (np.array(training_set[1:]) / 255.0 * 0.99) + 0.01
