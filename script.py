@@ -52,12 +52,18 @@ for record in test_data_list:
     # (Meaning the highest value of the list of outputs)
     label = np.argmax(outputs)
 
+    print(label, "guessed label\n")
+
     # Append a good value (1) or a bad value (0) based on the neural networks success rate
     if (label == correct_label):
         scorecard.append(1)
     else:
         scorecard.append(0)
         pass
+
+    image_array = np.asfarray(all_values[1:]).reshape((28,28))
+    plt.imshow(image_array, cmap = 'Greys', interpolation = 'None')
+    plt.show()
     pass
 
 # Print the scorecard and its relative success rate
